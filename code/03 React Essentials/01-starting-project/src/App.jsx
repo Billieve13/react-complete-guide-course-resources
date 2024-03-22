@@ -7,11 +7,30 @@ import { useState } from 'react';
 import { EXAMPLES } from './data';
 
 function App() {
-  const [buttonContent, setButtonContent] = useState('components');
+  const [buttonContent, setButtonContent] = useState('');
 
   function handleSelect(selectedButton) {
     setButtonContent(selectedButton);
   }
+
+  // let tabContent = <p>Please select a topic.</p>;   
+  // ---this is the alternative conditional rendering if you don't want to use the && operator,
+  // ---but it's not as clean as the && operator in this case and you would need to inject {buttonContent} 
+  // ---where the current structure is in the return statement
+
+  // if (buttonContent)  {
+  //   tabContent = (
+  //     <div id="tab-content">
+  //       <h3>{EXAMPLES[buttonContent].title}</h3>
+  //       <p>{EXAMPLES[buttonContent].description}</p>
+  //       <pre>
+  //         <code>
+  //           {EXAMPLES[buttonContent].code}
+  //         </code>
+  //       </pre>
+  //     </div>
+  //   );
+  // }
 
   return (
     <div>
@@ -37,12 +56,13 @@ function App() {
         <section id="examples">
           <h2>Examples</h2>
           <menu>
-            <TabButton onSelect={() => handleSelect('components')}>Components</TabButton>
-            <TabButton onSelect={() => handleSelect('jsx')}>JSX</TabButton>
-            <TabButton onSelect={() => handleSelect('props')}>Props</TabButton>
-            <TabButton onSelect={() => handleSelect('state')}>State</TabButton>
+            <TabButton isSelected={buttonContent === 'components'} onSelect={() => handleSelect('components')}>Components</TabButton>
+            <TabButton isSelected={buttonContent === 'jsx'} onSelect={() => handleSelect('jsx')}>JSX</TabButton>
+            <TabButton isSelected={buttonContent === 'props'} onSelect={() => handleSelect('props')}>Props</TabButton>
+            <TabButton isSelected={buttonContent === 'state'} onSelect={() => handleSelect('state')}>State</TabButton>
           </menu>
-          <div id="tab-content">
+            {!buttonContent && <p>Please select a topic.</p>}
+            {buttonContent && <div id="tab-content">
             <h3>{EXAMPLES[buttonContent].title}</h3>
             <p>{EXAMPLES[buttonContent].description}</p>
             <pre>
@@ -50,7 +70,7 @@ function App() {
               {EXAMPLES[buttonContent].code}
               </code>
             </pre>
-          </div>
+          </div>}
         </section>
       </main>
     </div>
